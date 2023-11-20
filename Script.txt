@@ -1,0 +1,26 @@
+function myFunction() {
+  var stopCounter = 0;
+  var files = DriveApp.getFiles();
+  while (files.hasNext()) {
+    stopCounter++;
+    if (stopCounter > 10000) {
+      return;
+    }
+    var file = files.next();
+    var name = file.getName();
+    //console.log(name);
+    if (name.startsWith("ToTrash")) {
+      var ownerObject = file.getOwner();
+      if (ownerObject != null) {
+        var owner = ownerObject.getEmail();
+        var currentUser = Session.getActiveUser().getEmail()
+        if (owner == currentUser) {
+          console.log(owner)
+          console.log(name);
+          file.setTrashed(true);
+        }
+      }
+    }
+  }
+}
+
